@@ -4,47 +4,41 @@ import Vue from 'vue';
 // import App from './App';
 import API from './lib/API';
 
-
 Vue.config.productionTip = false;
 
 /* eslint-disable no-new */
-new Vue(
-  {
-    el: '#body-div',
-    mounted() {
-      this.load();
+new Vue({
+  el: '#body-div',
+  mounted() {
+    this.load();
+    setTimeout(() => {
       this.loadTwo();
+    }, 1000);
+  },
+  methods: {
+    load() {
+      const api = new API();
+      api.getFilms()
+        .then((results) => {
+          this.films = results;
+        });
     },
-    methods: {
-      load() {
-        const api = new API();
-        api.getFilms()
+    loadTwo() {
+      const api = new API();
+      for (let i = 0; i < this.films.length; i += 1) {
+        api.getMovie(this.films[i].title)
           .then((results) => {
-            // console.log(results);
-            this.films = results;
-            console.log('getFilms load finsihed');
+            this.filmPosters.push(`${this.posterUrl}${results.results[0].poster_path}`);
           });
-      },
-      loadTwo() {
-        console.log('getMovie load finished');
-        const api = new API();
-        for (let i = 0; i < this.films.length; i += 1) {
-          console.log('working');
-          api.getMovie(this.films[i])
-            .then((results) => {
-              console.log(results);
-              this.movie = results;
-            });
-        }
-      },
-    },
-    data() {
-      return {
-        selected: '',
-        films: [],
-        posterURL: 'http://image.tmdb.org/t/p/w342',
-        filmPosters: [],
-      };
+      }
     },
   },
-);
+  data() {
+    return {
+      selected: '',
+      films: [],
+      posterUrl: 'http://image.tmdb.org/t/p/w342',
+      filmPosters: [],
+    };
+  },
+});
