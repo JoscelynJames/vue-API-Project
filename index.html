@@ -16,11 +16,11 @@
 
       <section id="api-section">
         <form>
-          <select v-model="selected">
+          <select v-model="selected" v-on:change="onChangeHandler($event)">
             <option disabled value="" v-bind:value="films.value" >Select a Movie To Start</option>
             <option v-for="film in films" id="drop-down">{{ film.title }}</option>
           </select>
-          <span>{{ selected }}</span>
+          <img :src="currentFilmPosterUrl" alt="Sorry no poster for this movie!" />
         </form>
       </section>
     </div>

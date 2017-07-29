@@ -28,9 +28,18 @@ new Vue({
       for (let i = 0; i < this.films.length; i += 1) {
         api.getMovie(this.films[i].title)
           .then((results) => {
-            this.filmPosters.push(`${this.posterUrl}${results.results[0].poster_path}`);
+            this.filmPosters[this.films[i].title] = `${this.posterUrl}${results.results[0].poster_path}`;
           });
       }
+    },
+    onChangeHandler(e) {
+      this.selected = e.target.value;
+      Object.keys(this.filmPosters)
+        .forEach((key) => {
+          if (key === this.selected) {
+            this.currentFilmPosterUrl = this.filmPosters[key];
+          }
+        });
     },
   },
   data() {
@@ -38,7 +47,8 @@ new Vue({
       selected: '',
       films: [],
       posterUrl: 'http://image.tmdb.org/t/p/w342',
-      filmPosters: [],
+      filmPosters: {},
+      currentFilmPosterUrl: '',
     };
   },
 });
