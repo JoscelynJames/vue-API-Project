@@ -16,12 +16,12 @@
 
       <section id="api-section">
         <form>
-          <select v-model="selected" v-on:change="onChangeHandler($event)">
-            <option disabled value="" v-bind:value="films.value" >Select a Movie To Start</option>
+          <select v-model="selected" @change="onChangeHandler($event)">
+            <option disabled value="Select a Movie To Start" v-bind:value="films.value">Select a Movie To Start</option>
             <option v-for="film in films" id="drop-down">{{ film.title }}</option>
           </select>
-          <img :src="currentFilmPosterUrl" alt="Sorry no poster for this movie!" />
         </form>
+        <img :src="currentFilmPosterUrl" alt="Sorry no poster for this movie!" />
       </section>
     </div>
     <!-- built files will be auto injected -->

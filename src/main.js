@@ -1,7 +1,6 @@
 // The Vue build version to load with the `import` command
 // (runtime-only or standalone) has been set in webpack.base.conf with an alias.
 import Vue from 'vue';
-// import App from './App';
 import API from './lib/API';
 
 Vue.config.productionTip = false;
@@ -28,7 +27,9 @@ new Vue({
       for (let i = 0; i < this.films.length; i += 1) {
         api.getMovie(this.films[i].title)
           .then((results) => {
+            if (!results.results[0].poster_path) return 'There is no poster for this movie :(';
             this.filmPosters[this.films[i].title] = `${this.posterUrl}${results.results[0].poster_path}`;
+            return null;
           });
       }
     },
@@ -36,15 +37,13 @@ new Vue({
       this.selected = e.target.value;
       Object.keys(this.filmPosters)
         .forEach((key) => {
-          if (key === this.selected) {
-            this.currentFilmPosterUrl = this.filmPosters[key];
-          }
+          if (key === this.selected) this.currentFilmPosterUrl = this.filmPosters[key];
         });
     },
   },
   data() {
     return {
-      selected: '',
+      selected: 'Select a Movie To Start',
       films: [],
       posterUrl: 'http://image.tmdb.org/t/p/w342',
       filmPosters: {},
